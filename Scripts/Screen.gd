@@ -1,6 +1,8 @@
 extends PanelContainer
 
 
+var generated_spritesheet = null
+
 onready var o_button_direction = get_node(
 	"MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/CheckButtonDirection"
 )
@@ -86,11 +88,13 @@ func _on_LineEditCount_text_changed(new_text):
 
 
 func _on_ButtonGenerate_pressed():
-	var image = Global.generate_spritesheet()
-	var texture = ImageTexture.new()
-	texture.create_from_image(image)
-	o_preview_rect.texture = texture
-	print("Preview size: ", o_preview_rect.texture.get_size())
+	generated_spritesheet = Global.generate_spritesheet()
+	if generated_spritesheet:
+		var texture = ImageTexture.new()
+		texture.create_from_image(generated_spritesheet)
+		o_preview_rect.texture = texture
+		print("Preview size: ", o_preview_rect.texture.get_size())
+		_enable_export()
 
 
 func _on_CheckButtonDirection_toggled(button_pressed):
